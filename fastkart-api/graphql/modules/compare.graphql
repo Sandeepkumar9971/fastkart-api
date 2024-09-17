@@ -1,0 +1,16 @@
+input AddToCompareInput {
+    product_id: Int
+}
+
+input DeleteCompareInput {
+    id: Int
+}
+
+extend type Query @guard {
+    compare: [Product]!  @paginate(resolver: "App\\GraphQL\\Queries\\CompareQuery@index" defaultCount:15)
+}
+
+extend type Mutation @guard {
+    addToCompare(input: AddToWishlistInput! @spread): [Product] @field(resolver: "CompareMutator@store")
+    deleteCompare(input: DeleteCompareInput! @spread): Boolean @field(resolver: "CompareMutator@destroy")
+}

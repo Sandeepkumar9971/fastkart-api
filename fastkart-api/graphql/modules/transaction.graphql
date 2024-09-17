@@ -1,0 +1,16 @@
+type Transactions {
+  id: Int
+  wallet_id: Int
+  order_id: Int
+  point_id: Int
+  amount: Float
+  type: String
+  detail: String
+  from: Int
+  created_at: DateTime
+}
+
+input creditDebitInput {
+  consumer_id: Int!
+  balance: Float
+}

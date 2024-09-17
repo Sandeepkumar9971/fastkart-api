@@ -1,0 +1,50 @@
+type PaymentAccount {
+    id: Int
+    paypal_email: String
+    bank_name: String
+    bank_holder_name: String
+    bank_account_no: String
+    swift: String
+    ifsc: String
+    is_default: Int
+    status: Int
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input CreateUpdatePaymentAccountInput {
+    paypal_email: String
+    bank_name: String
+    bank_holder_name: String
+    bank_account_no: String
+    swift: String
+    ifsc: String
+    is_default: Int
+    status: Int
+}
+
+input DeletePaymentAccountInput {
+    id: Int!
+}
+
+extend type Query @guard {
+    paymentAccount (
+        sort: String
+        field: String
+        start_date:String
+        status:Int
+        end_date:String
+        paginate: Int
+    ): PaymentAccount @field(resolver: "App\\GraphQL\\Queries\\PaymentAccountQuery@index" defaultCount:15)
+}
+
+extend type Mutation @guard {
+    createUpdatePaymentAccount(input: CreateUpdatePaymentAccountInput @spread): PaymentAccount
+        @can(ability: "payment_account.create")
+        @field(resolver: "PaymentAccountMutator@store")
+
+    deletePaymentAccount(input: DeletePaymentAccountInput @spread): Boolean!
+        @can(ability: "payment_account.destroy", model: "App\\Models\\PaymentAccount")
+        @field(resolver: "PaymentAccountMutator@destroy")
+
+}

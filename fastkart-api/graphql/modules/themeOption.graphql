@@ -1,0 +1,185 @@
+type ThemeOption {
+    id: Int
+    options: Json
+}
+
+type LogoOption {
+    header_logo_id: Int
+    footer_logo_id: Int
+    favicon_icon_id: Int
+    header_logo:Attachment
+    footer_logo:Attachment
+    favicon_icon:Attachment
+}
+
+type Options {
+    logo:LogoOption
+    general: GeneralOptions
+    seo: SeoOptions
+    footer: FooterOptions
+    header: HeaderOptions
+    blog: BlogOptions
+    error_page: ErrorPageOptions
+    page_layout: PageLayoutOptions
+}
+
+type GeneralOptions {
+    site_title: String
+    site_tagline: String
+    sticky_cart_enable: Boolean
+    cart_style: String
+    back_to_top_enable: Boolean
+    cookie_message: String
+    language_direction: String
+    primary_color: String
+    mode: String
+}
+
+type SeoOptions {
+    front_meta_title: String
+    front_meta_description: String
+    front_meta_tags: String
+    front_og_title: String
+    front_og_description: String
+    og_image_id: Int
+    og_image: Attachment
+}
+
+type FooterOptions {
+    footer_style:String
+    footer_copyright:Boolean
+    copyright_content: String
+    payment_enable:Int
+    footer_about: String
+    about_address: String
+    about_email:String
+    footer_categories:[Int]
+    footer_pages: String
+    useful_link: [Json]
+    support_number:String
+    support_email: String
+    play_store_url: String
+    social_media_enable: String
+    facebook: String
+    instagram: String
+    twitter: String
+    pinterest: String
+}
+
+type HeaderOptions {
+    sticky_header_enable: Boolean
+    header_options: String
+    page_top_bar_enable: Int
+    top_bar_content: Json
+    page_top_bar_dark: Boolean
+    support_number: String
+    today_deals: [Int]
+    category_ids: [Int]
+}
+
+type BlogOptions {
+    blog_style: String
+    blog_sidebar_type: String
+    blog_author_enable: Int
+    read_more_enable: Int
+}
+
+type ErrorPageOptions {
+    error_page_content: String
+    back_button_enable: Int
+    back_button_text: String
+    button_redirect_link: String
+}
+
+type PageLayoutOptions {
+    shop_layout: String
+    product_layout: String
+}
+
+input OptionsInput {
+    options: Json
+}
+
+input LogoOptionInput {
+    header_logo_id: Int
+    footer_logo_id: Int
+    favicon_icon_id: Int
+}
+
+input GeneralOptionsInput {
+    site_title: String
+    site_tagline: String
+    primary_color: String
+    secondary_color: String
+    hover_color: String
+    cookie_message: String
+    cookie_enable: Int
+    preloader_enable: Int
+    back_to_top_enable: Int
+    language_direction: String
+}
+
+input SeoOptionsInput {
+    front_meta_title: String
+    front_meta_description: String
+    front_meta_tags: String
+    front_og_title: String
+    front_og_description: String
+    og_image_id: Int
+}
+
+input FooterOptionsInput {
+    footer_style:String
+    footer_copyright:Int
+    copyright_content: String
+    payment_enable:Int
+    footer_about: String
+    about_address: String
+    about_email:String
+    footer_categories:String
+    footer_pages: String
+    useful_link: [String]
+    support_number:String
+    support_email: String
+    social_media_enable: String
+    facebook: String
+    instagram: String
+    twitter: String
+    pinterest: String
+}
+
+input HeaderOptionsInput {
+    sticky_header_enable: Int
+    header_options: String
+    page_top_bar_enable: Int
+    topbar_description: String
+}
+
+input BlogOptionsInput {
+    blog_style: String
+    blog_sidebar_type: String
+    blog_author_enable: Int
+    read_more_enable: Int
+}
+
+input ErrorPageOptionsInput {
+    error_page_content: String
+    back_button_enable: Int
+    back_button_text: String
+    button_redirect_link: String
+}
+
+input PageLayoutOptionsInput {
+    shop_layout: String
+    product_layout: String
+}
+
+extend type Mutation {
+    updateThemeOption(input: OptionsInput @spread): ThemeOption
+        @can(ability: "theme_option.edit")
+        @field(resolver: "ThemeOptionMutator@update")
+}
+
+extend type Query {
+    themeOptions: ThemeOption @field(resolver: "App\\GraphQL\\Queries\\ThemeOptionQuery@index")
+}

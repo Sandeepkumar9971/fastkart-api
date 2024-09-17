@@ -1,0 +1,35 @@
+type Wallet {
+    id: Int
+    consumer_id: Int
+    balance: Float
+    transactions:[walletTransaction] @paginate(model: "App\\Models\\Transaction", defaultCount:15)
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+type walletTransaction {
+    id:Int
+    wallet_id:Int
+    order_id:Int
+    point_id:Int
+    amount:Float
+    type:String
+    detail:String
+    from:Int
+    created_at:DateTime
+}
+
+extend type Query {
+    walletTransactions(
+        consumer_id: Int
+        search: String
+        start_date: String
+        paginate: Int
+        end_date: String
+    ): Wallet  @field(resolver: "App\\GraphQL\\Queries\\WalletTeansactionQuery@index")
+}
+
+extend type Mutation {
+    creditWallet(input: creditDebitInput! @spread): Wallet @field(resolver: "WalletMutator@creditWallet")
+    debitWallet(input: creditDebitInput! @spread): Wallet @field(resolver: "WalletMutator@debitWallet")
+}

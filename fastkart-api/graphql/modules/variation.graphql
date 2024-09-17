@@ -1,0 +1,49 @@
+type Variation {
+    id: Int
+    name: String
+    price: Float
+    sale_price: Float
+    quantity: Int
+    sku: String
+    discount: Float
+    stock_status: String
+    variation_image_id: Int
+    variation_image: Attachment
+    attribute_values: [AttributeValue]
+    status: Int
+    product_id: Int
+    created_at: DateTime!
+    updated_at: DateTime!
+}
+
+input CreateVariationInput {
+    id: Int
+    name: String
+    price: Float
+    sale_price: Float
+    quantity: Int
+    sku: String
+    discount: Float
+    stock_status: String
+    variation_image_id: Int
+    attribute_values: [Int]
+    status: Int
+}
+
+input UpdateVariationInput {
+    id: Int!
+    name: String
+    price: Float
+    sale_price: Float
+    quantity: Int
+    sku: String
+    discount: Float
+    stock_status: String
+    variation_image_id: Int
+    attribute_values: [Int]
+    status: Int
+}
+
+input DeleteStoreInput {
+    id: Int!
+}

@@ -1,0 +1,69 @@
+type Address {
+    id: Int
+    title: String
+    user_id: Int
+    street: String
+    city: String
+    pincode: String
+    country_code: String
+    phone: String
+    is_default: Int
+    country_id: Int
+    state_id: Int
+    country: Country
+    state: State
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+input CreateAddressInput {
+    title: String
+    street: String
+    pincode: String
+    country_code: String
+    phone: String
+    is_default: Int
+    city: String
+    country_id: Int
+    state_id: Int
+}
+
+input UpdateAddressInput {
+    id: Int!
+    title: String
+    street: String
+    pincode: String
+    country_code: String
+    phone: String
+    is_default: Int
+    city: String
+    country_id: Int
+    state_id: Int
+}
+
+input DeleteAddressInput {
+    id: Int
+}
+
+extend type Mutation @guard {
+    createAddress(input: CreateAddressInput @spread): Address
+        @can(ability: "user.create", model: "App\\Models\\User")
+        @field(resolver: "AddressMutator@store")
+
+    updateAddress(input: UpdateAddressInput @spread): Address
+        @can(ability: "user.edit", model: "App\\Models\\User")
+        @field(resolver: "AddressMutator@update")
+
+    deleteAddress(input: DeleteAddressInput @spread): Boolean!
+        @can(ability: "user.destroy", model: "App\\Models\\User")
+        @field(resolver: "AddressMutator@destroy")
+}
+
+extend type Query @guard {
+    addresses(
+        search: String
+        paginate: Int
+    ): [Address!]!  @paginate(resolver: "App\\GraphQL\\Queries\\AddressQuery@index" defaultCount:15)
+    @can(ability: "user.index", model: "App\\Models\\Address")
+    address(id: Int @eq): Address @can(ability: "user.index") @find
+}

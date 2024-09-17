@@ -1,0 +1,39 @@
+type VendorWallet {
+    id: Int
+    vendor_id: Int
+    balance: Float
+    vendor:User
+    transactions:[vendorWalletTransaction] @paginate(model: "App\\Models\\VendorTransaction", defaultCount:15)
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+type vendorWalletTransaction {
+    id:Int
+    vendor_wallet_id:Int
+    vendor_id:Int
+    amount:Float
+    type:String
+    detail:String
+    from:Int
+    created_at:DateTime
+}
+
+extend type Query {
+    vendorWalletTransactions(
+        vendor_id: Int
+        search: String
+        start_date: String
+        end_date: String
+    ): VendorWallet  @field(resolver: "App\\GraphQL\\Queries\\VendorWalletQuery@vendorWalletTransactions")
+}
+
+input creditDebitVendorInput {
+  vendor_id: Int!
+  balance: Float
+}
+
+extend type Mutation {
+    creditVendorWallet(input: creditDebitVendorInput! @spread): VendorWallet @field(resolver: "VendorWalletMutator@creditVendorWallet")
+    debitVendorWallet(input: creditDebitVendorInput! @spread): VendorWallet @field(resolver: "VendorWalletMutator@debitVendorWallet")
+}

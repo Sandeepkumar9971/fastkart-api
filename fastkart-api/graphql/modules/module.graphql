@@ -1,0 +1,20 @@
+type Module{
+    id: Int
+    name: String
+    created_at: DateTime
+    updated_at: DateTime
+    module_permissions: [ModulePermission]
+}
+
+type ModulePermission{
+    id: Int
+    name: String
+    module_id: Int
+    permission_id: Int
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+extend type Query {
+    modules: [Module!]! @can(ability: "role.index") @all
+}
